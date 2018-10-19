@@ -153,7 +153,7 @@
         <script src="js/login.js" type="text/javascript"></script>
         <!-- Mapa 
         <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v3"></script>-->
-        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfV1YVeLbIoniXXMme4Q4BlnMI0PCuGp0&callback=initMap" type="text/javascript"></script>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBXv_eHl8yd-qEFc8ogq7mzUEjuYNVRAE&callback=initMap" type="text/javascript"></script>
         <script type="text/javascript" src="js/mapa.js"></script>
 
     </body>
