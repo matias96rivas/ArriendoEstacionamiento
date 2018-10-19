@@ -9,6 +9,6 @@ package Duoc.Portafolio.Clases;
  *
  * @author Dheler!
  */
-public class Admin {
+public class Estacionamiento {
     
 }

@@ -10,6 +10,56 @@ package Duoc.Portafolio.Clases;/*
  */
 public class Usuario {
     private int id_usuario;
+    private String rut;
+    private String password;
+    private TipoUsu tipoUsu;
+    private int estado;
+    
+    
+
+    public Usuario(int id_usuario, String rut, String password, TipoUsu tipoUsu, int estado) {
+        this.id_usuario = id_usuario;
+        this.rut = rut;
+        this.password = password;
+        this.tipoUsu = tipoUsu;
+        this.estado = estado;
+    }
+    
+    
+
+    public String getRut() {
+        return rut;
+    }
+
+    public void setRut(String rut) {
+        this.rut = rut;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public TipoUsu getTipoUsu() {
+        return tipoUsu;
+    }
+
+    public void setTipoUsu(TipoUsu tipoUsu) {
+        this.tipoUsu = tipoUsu;
+    }
+
+    public int getEstado() {
+        return estado;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
+    }
+    
+    
 
     public Usuario() {
     }
