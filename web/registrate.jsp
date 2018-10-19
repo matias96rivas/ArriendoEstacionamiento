@@ -1,3 +1,9 @@
+<%-- 
+    Document   : registrate
+    Created on : 12-10-2018, 15:32:44
+    Author     : Matias
+--%>
+
 <!DOCTYPE html>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <html lang="en">
@@ -20,7 +26,11 @@
 
         <!-- login -->
         <link href="css/login.css" rel="stylesheet" type="text/css"/>
-        
+
+        <!-- formulario -->
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link href="css/tablaFormulario.css" rel="stylesheet" type="text/css"/>
+
     </head>
 
     <body>
@@ -46,18 +56,44 @@
                             <!-- Catagory Area -->
                             <div class="world-catagory-area">
                                 <ul class="nav nav-tabs" id="myTab" role="tablist">
-                                    <li class="title">Estacionamientos Disponibles</li>                                    
+                                    <li class="title">Ingresa tus datos y registrate:</li>                                    
                                 </ul>
-
-                                <div class="tab-content" id="myTabContent">
-
-                                    <div class="tab-pane fade show active" id="world-tab-1" role="tabpanel" aria-labelledby="tab1">
-                                        <p>Aqui va el mapa</p>
-                                        <div id="mapa" style="width: 700px; height: 500px;">
-
+                                <!-- Contact Section -->
+                                <div class="w3-container w3-padding-32" >
+                                    <form action="/action_page.php" target="_blank">
+                                        <input class="w3-input w3-border" type="text" placeholder="Nombre:" required name="txtNombre">
+                                        <input class="w3-input w3-section w3-border" type="text" placeholder="Apellido:" required name="txtApellido">
+                                        <input class="w3-input w3-section w3-border" type="text" placeholder="Rut:" required name="txtRut">
+                                        <input class="w3-input w3-section w3-border" type="date" placeholder="Fecha de Nacimiento:" required name="txtNacimiento">
+                                        <input class="w3-input w3-section w3-border" type="text" placeholder="Correo electrónico:" required name="txtCorreo">
+                                        
+                                        
+                                        
+                                        <select name="cboTipoUsu" class="w3-input w3-section w3-border">
+                                            <option onclick="ocultar()">Tipo de Usuario:</option>
+                                            <option onclick="mostrarE()">Arrendatario</option>
+                                            <option onclick="mostrarA()">Arrendador</option>
+                                        </select> 
+                                        <div id="auto" style='display:none;'>
+                                            <h5 class="title">Ingrese los datos de su vehículo:</h5>
+                                            <input class="w3-input w3-section w3-border" type="text" placeholder="Patente:" required name="txtPatente">
+                                            <input class="w3-input w3-section w3-border" type="text" placeholder="Año:" required name="txtAnio">
+                                            <input class="w3-input w3-section w3-border" type="text" placeholder="Marca:" required name="txtMarca">
+                                            <input class="w3-input w3-section w3-border" type="text" placeholder="Modelo:" required name="txtModelo">
                                         </div>
-
-                                    </div>
+                                        <div id="estacionamiento" style='display:none;'>
+                                            <h5 class="title">Ingrese los datos de su estacionamiento:</h5>
+                                            <input class="w3-input w3-section w3-border" type="text" placeholder="Comuna:" required name="txtComuna">
+                                            
+                                        </div>
+                                        <button class="w3-button w3-black w3-section" type="submit">
+                                            <i class="fa fa-paper-plane"></i> Registrarse
+                                        </button>
+                                        
+                                        
+                                        
+                                        
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -104,10 +140,10 @@
                 </div>
 
                 <div class="container">
-                    <label><b>Nombre de usuario:</b></label>
-                    <input type="text" placeholder="Ingrese nombre de usuario" name="txtRut" required>
+                    <label for="uname"><b>Nombre de usuario:</b></label>
+                    <input type="text" placeholder="Ingrese su rut" name="txtRut" required>
 
-                    <label><b>Contraseña:</b></label>
+                    <label for="psw"><b>Contraseña:</b></label>
                     <input type="password" placeholder="Ingrese su contraseña" name="txtPass" required>
 
                     <button name="Ingresar" value="btnAccion" type="submit">Login</button>
@@ -151,10 +187,9 @@
         <script src="js/active.js"></script>
         <!-- Login -->
         <script src="js/login.js" type="text/javascript"></script>
-        <!-- Mapa 
-        <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v3"></script>-->
-        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfV1YVeLbIoniXXMme4Q4BlnMI0PCuGp0&callback=initMap" type="text/javascript"></script>
-        <script type="text/javascript" src="js/mapa.js"></script>
+        
+        <!-- formulario -->
+        <script src="js/tablaFormulario.js" type="text/javascript"></script>
 
     </body>
 
