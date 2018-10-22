@@ -6,6 +6,7 @@
 package Duoc.Portafolio.Dao;
 
 import Duoc.Portafolio.Clases.Comuna;
+import Duoc.Portafolio.Conexion.Conexion;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -32,6 +33,11 @@ public class DaoComuna {
     public void setMensaje(String mensaje) {
         this.mensaje = mensaje;
     }
+
+    public DaoComuna() {
+        cone = new Conexion().obtenerConexion();
+    }  
+    
     
     public List<Comuna> listarComuna(){
         //SE crea la lista de comunas vacia

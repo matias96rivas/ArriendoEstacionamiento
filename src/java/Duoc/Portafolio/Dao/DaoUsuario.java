@@ -7,6 +7,7 @@ package Duoc.Portafolio.Dao;
 
 import Duoc.Portafolio.Clases.TipoUsu;
 import Duoc.Portafolio.Clases.Usuario;
+import Duoc.Portafolio.Conexion.Conexion;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -33,6 +34,10 @@ public class DaoUsuario {
     public void setMensaje(String mensaje) {
         this.mensaje = mensaje;
     }
+
+    public DaoUsuario() {
+        cone = new Conexion().obtenerConexion();
+    }        
     
     public List<Usuario> listarUsuario(){
         //creo una lista de usuarios vacia

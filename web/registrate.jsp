@@ -4,6 +4,8 @@
     Author     : Matias
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page import="Duoc.Portafolio.Dao.DaoComuna"%>
 <!DOCTYPE html>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <html lang="en">
@@ -60,15 +62,19 @@
                                 </ul>
                                 <!-- Contact Section -->
                                 <div class="w3-container w3-padding-32" >
-                                    <form action="/action_page.php" target="_blank">
-                                        <input class="w3-input w3-border" type="text" placeholder="Nombre:" required name="txtNombre">
+                                    <form action="ServletUsuario" method="POST">
+                                        <input type="hidden" name="accion" value="agregarUsuario">
+                                        <h5 class="title">Ingrese sus datos de personales:</h5>
+                                        <input class="w3-input w3-section" type="text" placeholder="Rut:" required name="txtRut">
+                                        <input class="w3-input w3-section w3-border" type="text" placeholder="Nombre:" required name="txtNombre">
                                         <input class="w3-input w3-section w3-border" type="text" placeholder="Apellido:" required name="txtApellido">
-                                        <input class="w3-input w3-section w3-border" type="text" placeholder="Rut:" required name="txtRut">
                                         <input class="w3-input w3-section w3-border" type="date" placeholder="Fecha de Nacimiento:" required name="txtNacimiento">
                                         <input class="w3-input w3-section w3-border" type="text" placeholder="Correo electrónico:" required name="txtCorreo">
-                                        
-                                        
-                                        
+                                        <h5 class="title">Ingrese los datos de su cuenta:</h5>
+                                        <input class="w3-input w3-border" type="text" placeholder="Nombre de usuario:" required name="txtNombreUser">
+                                        <input class="w3-input w3-section w3-border" type="text" placeholder="Contraseña:" required name="txtPass">
+                                        <input class="w3-input w3-section w3-border" type="text" placeholder="Confirme contraseña:" required name="txtPassConf">
+
                                         <select name="cboTipoUsu" class="w3-input w3-section w3-border">
                                             <option onclick="ocultar()">Tipo de Usuario:</option>
                                             <option onclick="mostrarE()">Arrendatario</option>
@@ -77,22 +83,34 @@
                                         <div id="auto" style='display:none;'>
                                             <h5 class="title">Ingrese los datos de su vehículo:</h5>
                                             <input class="w3-input w3-section w3-border" type="text" placeholder="Patente:" required name="txtPatente">
-                                            <input class="w3-input w3-section w3-border" type="text" placeholder="Año:" required name="txtAnio">
-                                            <input class="w3-input w3-section w3-border" type="text" placeholder="Marca:" required name="txtMarca">
+                                            <input class="w3-input w3-section w3-border" type="number" placeholder="Año:" required name="txtAnio">
+                                            <select name="cboMarca" class="w3-input w3-section w3-border">
+                                                <option>Seleccione una marca:</option>    
+                                            </select>
+
                                             <input class="w3-input w3-section w3-border" type="text" placeholder="Modelo:" required name="txtModelo">
                                         </div>
                                         <div id="estacionamiento" style='display:none;'>
                                             <h5 class="title">Ingrese los datos de su estacionamiento:</h5>
+                                            <jsp:useBean class="Duoc.Portafolio.Dao.DaoComuna" id="comunaDao"/>
+                                            <select name="cboComuna" class="w3-input w3-section w3-border">
+                                                <option>Seleccione una comuna:</option>
+                                                <c:forEach items="${comunaDao.listarComuna()}" var="comuna">
+                                                    <option>${comuna.nombre_comuna}</option>
+                                                </c:forEach>
+                                                
+                                            </select>
                                             <input class="w3-input w3-section w3-border" type="text" placeholder="Comuna:" required name="txtComuna">
-                                            
+                                            <input class="w3-input w3-section w3-border" type="text" placeholder="Dirección:" required name="txtDireccion">
+
                                         </div>
                                         <button class="w3-button w3-black w3-section" type="submit">
                                             <i class="fa fa-paper-plane"></i> Registrarse
                                         </button>
-                                        
-                                        
-                                        
-                                        
+
+
+
+
                                     </form>
                                 </div>
                             </div>
@@ -187,7 +205,7 @@
         <script src="js/active.js"></script>
         <!-- Login -->
         <script src="js/login.js" type="text/javascript"></script>
-        
+
         <!-- formulario -->
         <script src="js/tablaFormulario.js" type="text/javascript"></script>
 
