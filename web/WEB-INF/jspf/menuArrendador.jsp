@@ -4,7 +4,7 @@
     Author     : Matias
 --%>
 
-<%@page import="clases.Usuario"%>
+<%@page import="Duoc.Portafolio.Clases.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     Usuario u = (Usuario) session.getAttribute("user");

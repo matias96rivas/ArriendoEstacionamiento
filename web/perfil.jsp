@@ -8,13 +8,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <c:choose>
-    <c:when test="${rutUsuario == null}">
+    <c:when test="${user == null}">
         <%
             response.sendRedirect("index.jsp");
         %>
     </c:when>
-    <c:when test="${rutUsuario != null}">
-        <c:if test="${rutUsuario.getTipo_usu().equals(1)}">
+    <c:when test="${user != null}">
+        <c:if test="${user.getTipoUsu().equals(1)}">
             <!DOCTYPE html>
             <html>
                 <head>
@@ -27,7 +27,7 @@
                 </body>
             </html>
         </c:if>
-        <c:if test="${rutUsuario.getTipo_usu().equals(2)}">
+        <c:if test="${user.getTipoUsu().equals(2)}">
             <!DOCTYPE html>
             <html>
                 <head>
@@ -40,7 +40,7 @@
                 </body>
             </html>
         </c:if>
-        <c:if test="${rutUsuario.getTipo_usu().equals(3)}">
+        <c:if test="${user.getTipoUsu.equals(3)}">
             <!DOCTYPE html>
             <html>
                 <head>

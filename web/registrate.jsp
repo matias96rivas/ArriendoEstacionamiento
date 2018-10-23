@@ -4,6 +4,10 @@
     Author     : Matias
 --%>
 
+<%@page import="java.sql.ResultSet"%>
+<%@page import="java.sql.Statement"%>
+<%@page import="Duoc.Portafolio.Conexion.Conexion"%>
+<%@page import="java.sql.Connection"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="Duoc.Portafolio.Dao.DaoComuna"%>
 <!DOCTYPE html>
@@ -32,6 +36,17 @@
         <!-- formulario -->
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <link href="css/tablaFormulario.css" rel="stylesheet" type="text/css"/>
+
+        <!--  formato fecha-->
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <link rel="stylesheet" href="/resources/demos/style.css">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script>
+            $(function () {
+                $("#datepicker").datepicker();
+            });
+        </script>
 
     </head>
 
@@ -63,54 +78,51 @@
                                 <!-- Contact Section -->
                                 <div class="w3-container w3-padding-32" >
                                     <form action="ServletUsuario" method="POST">
-                                        <input type="hidden" name="accion" value="agregarUsuario">
-                                        <h5 class="title">Ingrese sus datos de personales:</h5>
+                                        <input type="hidden" name="accion" id="accion" value="agregarUsuario">
+                                        <!--<h5 class="title">Ingrese sus datos de personales:</h5>
                                         <input class="w3-input w3-section" type="text" placeholder="Rut:" required name="txtRut">
                                         <input class="w3-input w3-section w3-border" type="text" placeholder="Nombre:" required name="txtNombre">
                                         <input class="w3-input w3-section w3-border" type="text" placeholder="Apellido:" required name="txtApellido">
                                         <input class="w3-input w3-section w3-border" type="date" placeholder="Fecha de Nacimiento:" required name="txtNacimiento">
                                         <input class="w3-input w3-section w3-border" type="text" placeholder="Correo electrónico:" required name="txtCorreo">
-                                        <h5 class="title">Ingrese los datos de su cuenta:</h5>
+                                        --><h5 class="title">Ingrese los datos de su cuenta:</h5>
                                         <input class="w3-input w3-border" type="text" placeholder="Nombre de usuario:" required name="txtNombreUser">
                                         <input class="w3-input w3-section w3-border" type="text" placeholder="Contraseña:" required name="txtPass">
-                                        <input class="w3-input w3-section w3-border" type="text" placeholder="Confirme contraseña:" required name="txtPassConf">
 
-                                        <select name="cboTipoUsu" class="w3-input w3-section w3-border">
-                                            <option onclick="ocultar()">Tipo de Usuario:</option>
-                                            <option onclick="mostrarE()">Arrendatario</option>
-                                            <option onclick="mostrarA()">Arrendador</option>
+
+                                        <select name="cboTipoUsu" id="cboTipoUsu" class="w3-input w3-section w3-border">
+                                            <option>Tipo de Usuario:</option>
+                                            <%
+                                                try {
+                                                    String sql = "SELECT * FROM TIPO_USUARIO WHERE id_tipo_usuario = 3 or id_tipo_usuario = 2";
+
+                                                    Connection cone = new Conexion().obtenerConexion();
+                                                    Statement stm = cone.createStatement();
+
+                                                    ResultSet rs = stm.executeQuery(sql);
+
+                                                    while (rs.next()) {
+
+
+                                            %>
+                                            <option value="<%=rs.getInt("id_tipo_usuario")%>">
+                                                <%=rs.getString("descripcion")%>
+                                            </option>
+                                            <%
+                                                    }
+                                                } catch (Exception e) {
+                                                }
+                                            %>
                                         </select> 
-                                        <div id="auto" style='display:none;'>
-                                            <h5 class="title">Ingrese los datos de su vehículo:</h5>
-                                            <input class="w3-input w3-section w3-border" type="text" placeholder="Patente:" required name="txtPatente">
-                                            <input class="w3-input w3-section w3-border" type="number" placeholder="Año:" required name="txtAnio">
-                                            <select name="cboMarca" class="w3-input w3-section w3-border">
-                                                <option>Seleccione una marca:</option>    
-                                            </select>
 
-                                            <input class="w3-input w3-section w3-border" type="text" placeholder="Modelo:" required name="txtModelo">
-                                        </div>
-                                        <div id="estacionamiento" style='display:none;'>
-                                            <h5 class="title">Ingrese los datos de su estacionamiento:</h5>
-                                            <jsp:useBean class="Duoc.Portafolio.Dao.DaoComuna" id="comunaDao"/>
-                                            <select name="cboComuna" class="w3-input w3-section w3-border">
-                                                <option>Seleccione una comuna:</option>
-                                                <c:forEach items="${comunaDao.listarComuna()}" var="comuna">
-                                                    <option>${comuna.nombre_comuna}</option>
-                                                </c:forEach>
-                                                
-                                            </select>
-                                            <input class="w3-input w3-section w3-border" type="text" placeholder="Comuna:" required name="txtComuna">
-                                            <input class="w3-input w3-section w3-border" type="text" placeholder="Dirección:" required name="txtDireccion">
+                                        <h5 class="title">Ingrese los datos de su Tarjeta Bancaria:</h5>
+                                        <input class="w3-input w3-border" type="text" placeholder="Ingrese el n° de su tarjeta:" required name="txtNTarjeta">
+                                        <input class="w3-input w3-section w3-border" type="date" placeholder="Ingrese la fecha de expiración:" id="datepicker" required name="txtFecha">
 
-                                        </div>
+
                                         <button class="w3-button w3-black w3-section" type="submit">
                                             <i class="fa fa-paper-plane"></i> Registrarse
                                         </button>
-
-
-
-
                                     </form>
                                 </div>
                             </div>
@@ -151,7 +163,7 @@
         <!-- ***** Modal de login ***** -->
         <div id="id01" class="modal">
 
-            <form class="modal-content animate" action="IniciarSesion.do" method="POST">
+            <form class="modal-content animate" action="ServletLogin" method="POST">
                 <div class="imgcontainer">
                     <span onclick="document.getElementById('id01').style.display = 'none'" class="close" title="Cerrar">&times;</span>
                     <img src="img/log.PNG" alt="Avatar" class="avatar">
@@ -208,6 +220,21 @@
 
         <!-- formulario -->
         <script src="js/tablaFormulario.js" type="text/javascript"></script>
+
+        <!-- formato fecha -->
+        <script>
+                                        $(document).ready(function () {
+                                            var date_input = $('input[name="txtFecha"]'); //our date input has the name "date"
+                                            var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
+                                            var options = {
+                                                format: 'dd/mm/yyyy',
+                                                container: container,
+                                                todayHighlight: true,
+                                                autoclose: true,
+                                            };
+                                            date_input.datepicker(options);
+                                        });
+        </script>
 
     </body>
 

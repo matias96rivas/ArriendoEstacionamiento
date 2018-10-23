@@ -13,23 +13,25 @@ import java.sql.DriverManager;
  * @author Dheler!
  */
 public class Conexion {
-    private static Connection cone;
-    
-    private String usuario = "zana";
+
+    private Connection cone;
+
+    private String usuario = "proyecto";
     private String pass = "1234";
-    
-    private String url = "jdbc:oracle:thin:@localhost:1521:xe";
-    
-    public Conexion(){
+
+    private String url = "jdbc:oracle:thin:" + usuario + "/" + pass + "@localhost:1521:xe";
+
+    public Conexion() {
         try {
             //Cargar libreria jdbc para Oracle
-            Class.forName("Oracle.jdbc.OracleDriver").newInstance();
-            this.cone = DriverManager.getConnection(url,usuario, pass);
+            Class.forName("oracle.jdbc.OracleDriver").newInstance();
+            this.cone = DriverManager.getConnection(url, usuario, pass);
         } catch (Exception e) {
-            System.out.println("Error de Conexion");
+            System.out.println("Error de Conexion: " + e.getMessage());
         }
     }
-    public Connection obtenerConexion(){
-            return cone;
-        }
+
+    public Connection obtenerConexion() {
+        return cone;
+    }
 }

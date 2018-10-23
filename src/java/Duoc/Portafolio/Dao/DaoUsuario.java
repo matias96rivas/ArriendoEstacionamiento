@@ -40,42 +40,31 @@ public class DaoUsuario {
     }        
     
     public List<Usuario> listarUsuario(){
-        //creo una lista de usuarios vacia
-        List<Usuario> usuarios = null;
-        //Guardo el procedimiento dentro de la varible sql
-        String sql = "{call sp_listar_usuario(?)}";
-        //Compruebo que la conexion no sea nula
+        List<Usuario> lista = null;
+        
+        String sql = "{call sp_listar_usuario}";
+        
         if (this.cone != null) {
             try {
-                //preparo la llamada al procedimiento
                 CallableStatement cs = cone.prepareCall(sql);
-                //Genero el cursor
-                cs.registerOutParameter(1, OracleTypes.CURSOR);
-                //ejecuto el procedimiento
-                cs.executeQuery();
-                //Compruebo que el resultado afecto y fue exitoso
-                ResultSet rs = (ResultSet) cs.getObject(1);
-                //convierto la lista en un Array
-                usuarios = new ArrayList<>();
-                //recorro los datos y los seteo
+                
+                ResultSet rs = cs.executeQuery();
+                lista = new ArrayList<Usuario>();
+                
                 while (rs.next()) {                    
-                    //creo un nuevo usuario
                     Usuario u = new Usuario();
                     
                     u.setId_usuario(rs.getInt(1));
                     u.setNombre(rs.getString(2));
-                    u.setPassword(rs.getString(3));
-                    //creo un tipo de usuario para setear el id
-                    TipoUsu tu = new TipoUsu();
-                    tu.setId_tipo_usuario(rs.getInt(4));
-                    u.setTipoUsu(tu);
-                    //Guardo los datos en la lista
-                    usuarios.add(u);
+                    u.setEstado(rs.getInt(3));
+                    
+                    u.setTipoUsu(rs.getInt(4));
+                    
+                    lista.add(u);
                 }
-                //cierro la conexion
                 cone.close();
             } catch (SQLException ex) {
-                setMensaje("Error al listar los datos de usuario. "+ex.getMessage());
+                setMensaje("Problemas al listar usuarios: "+ex.getMessage());
                 Logger.getLogger(DaoUsuario.class.getName()).log(Level.SEVERE, null, ex);
             }finally{
                 try {
@@ -87,33 +76,30 @@ public class DaoUsuario {
         }else{
             setMensaje("Error en la conexion. ");
         }
-        //retorno la lista
-        return usuarios;
+        return lista;
     }
     
     public void agregarUsuario(Usuario usuario){
-        //Guardo el procedimiento en al variable sql
-        String sql = "call sp_agregar_usuario(?,?,?,?)";
-        //compruebo que la conexion no sea nula
+        String sql = "{call sp_agregar_usuario(?,?,?,?)}";
+        
+        Connection cone = new Conexion().obtenerConexion();
         if (this.cone != null) {
             try {
-                //preparo la llamada al procedimiento
                 CallableStatement cs = cone.prepareCall(sql);
-                //seteo las varibles con los nuevos datos
+                
                 cs.setString(1, usuario.getNombre());
                 cs.setString(2, usuario.getPassword());
                 cs.setInt(3, usuario.getEstado());
-                cs.setInt(4, usuario.getTipoUsu().getId_tipo_usuario());
-                //compruebo que se haya realizado con exito
+                cs.setInt(4, usuario.getTipoUsu());
+                
                 int exe = cs.executeUpdate();
                 if (exe == 0) {
                     throw new SQLException();
                 }
-                setMensaje("Los datos de usuario fueron registrados correctamente.");
-                //cierro la conexion
-                cone.close();
+                setMensaje("Usuario agregado correctamente");
+                this.cone.close();                
             } catch (SQLException ex) {
-                setMensaje("Error al registrar los datos de usuario. "+ex.getMessage());
+                setMensaje("Problemas al agregar un usuario"+ex.getMessage());
                 Logger.getLogger(DaoUsuario.class.getName()).log(Level.SEVERE, null, ex);
             }finally{
                 try {
@@ -123,7 +109,7 @@ public class DaoUsuario {
                 }
             }
         }else{
-            setMensaje("Error en la conexion.");
+            setMensaje("Error en la conexion");
         }
     }
     

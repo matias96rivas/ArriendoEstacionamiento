@@ -12,12 +12,12 @@ public class Usuario {
     private int id_usuario;
     private String nombre;
     private String password;
-    private TipoUsu tipoUsu;
+    private int tipoUsu;
     private int estado;
     
     
 
-    public Usuario(int id_usuario, String nombre, String password, TipoUsu tipoUsu, int estado) {
+    public Usuario(int id_usuario, String nombre, String password, int tipoUsu, int estado) {
         this.id_usuario = id_usuario;
         this.nombre = nombre;
         this.password = password;
@@ -43,11 +43,11 @@ public class Usuario {
         this.password = password;
     }
 
-    public TipoUsu getTipoUsu() {
+    public int getTipoUsu() {
         return tipoUsu;
     }
 
-    public void setTipoUsu(TipoUsu tipoUsu) {
+    public void setTipoUsu(int tipoUsu) {
         this.tipoUsu = tipoUsu;
     }
 

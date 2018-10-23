@@ -97,7 +97,7 @@
         <!-- ***** Modal de login ***** -->
         <div id="id01" class="modal">
 
-            <form class="modal-content animate" action="IniciarSesion.do" method="POST">
+            <form class="modal-content animate" action="ServletInicio" method="POST">
                 <div class="imgcontainer">
                     <span onclick="document.getElementById('id01').style.display = 'none'" class="close" title="Cerrar">&times;</span>
                     <img src="img/log.PNG" alt="Avatar" class="avatar">

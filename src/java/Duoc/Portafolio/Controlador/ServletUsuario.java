@@ -5,23 +5,23 @@
  */
 package Duoc.Portafolio.Controlador;
 
-import Duoc.Portafolio.Clases.ClienteArrendador;
-import Duoc.Portafolio.Clases.Comuna;
-import Duoc.Portafolio.Clases.DuenoEstacionamiento;
-import Duoc.Portafolio.Clases.Estacionamiento;
+import Duoc.Portafolio.Clases.Tarjeta;
 import Duoc.Portafolio.Clases.TipoUsu;
 import Duoc.Portafolio.Clases.Usuario;
-import Duoc.Portafolio.Clases.Vehiculo;
-import Duoc.Portafolio.Dao.DaoClienteArrendador;
-import Duoc.Portafolio.Dao.DaoDuenoEstacionamiento;
-import Duoc.Portafolio.Dao.DaoEstacionamiento;
+import Duoc.Portafolio.Dao.DaoTarjeta;
 import Duoc.Portafolio.Dao.DaoUsuario;
-import Duoc.Portafolio.Dao.DaoVehiculo;
+import Duoc.Portafolio.Herramientas.Convertidor;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,166 +30,120 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Matias
  */
+@WebServlet(name = "ServletUsuario", urlPatterns = {"/ServletUsuario"})
 public class ServletUsuario extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    
-    DaoUsuario daoUser = new DaoUsuario();
-    DaoClienteArrendador daoCliente = new DaoClienteArrendador();
-    DaoDuenoEstacionamiento daoDueno = new DaoDuenoEstacionamiento();
-    DaoEstacionamiento daoEstacionamiento = new DaoEstacionamiento();
-    DaoVehiculo daoVahiculo = new DaoVehiculo();
-    
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
-        //parametro para identificar la accion
-        String accion = request.getParameter("accion");
-        //pregunto si la accion es igual al metodo
-        if (accion.equals("agregarUsuario")) {
-            agregarUsuario(request, response);
+    @Override
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String accion = req.getParameter("accion");
+        String mensaje = null;
+        String mensajeT = null;
+        String direccionar = null;
+
+        DaoUsuario daoU = new DaoUsuario();
+        DaoTarjeta daoT = new DaoTarjeta();
+
+        switch (accion) {
+            case "listar":
+                List<Usuario> lista = daoU.listarUsuario();
+
+                if (lista != null) {
+                    req.setAttribute("listaUsuario", lista);
+                } else {
+                    mensaje = daoU.getMensaje();
+                }
+                direccionar = "listarUsuario.jsp";
+                req.getRequestDispatcher(direccionar).forward(req, resp);
+                break;
+            case "agregarUsuario":
+                Usuario u = new Usuario();
+                Tarjeta t = new Tarjeta();
+
+                mensaje = verificarU(req, u);
+                mensajeT = verificarT(req, t);
+
+                if (mensaje == null && mensajeT == null) {
+                    daoU.agregarUsuario(u);
+                    mensaje = daoU.getMensaje();
+
+                    daoT.agregarTarjeta(t);
+                    mensajeT = daoT.getMensaje();
+
+                    if (mensaje != null || mensajeT != null) {
+                        req.setAttribute("usuario", u);
+                        direccionar = "registrate.jsp";
+                        req.getRequestDispatcher(direccionar).forward(req, resp);
+                    } else {
+                        direccionar = "index.jsp";
+                        req.getRequestDispatcher(direccionar).forward(req, resp);
+                    }
+                } else {
+                    req.setAttribute("usuario", u);
+                    direccionar = "registrate.jsp";
+                    req.getRequestDispatcher(direccionar).forward(req, resp);
+                }
+                break;
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
+    private String verificarU(HttpServletRequest req, Usuario u) {
+        String mensaje = "<ul>";
+
+        String nombre = req.getParameter("txtNombreUser");
+        String pass = req.getParameter("txtPass");
+
+        int estado = 1;
+
+        
+        int id_tipo_usu = Integer.parseInt(req.getParameter("cboTipoUsu"));
+        
+
+        if ((nombre.trim().length() <= 3)) {
+            mensaje += "<li>El nombre de usuario debe tener al menos 3 caracteres.</li>";
+        }
+
+        if ((pass.trim().length() <= 3)) {
+            mensaje += "<li>Contraseña insegura!!! Por favor, ingrese una contraseña con más de 3 caracteres.</li>";
+        }
+
+        u.setNombre(nombre);
+        u.setPassword(pass);
+        u.setEstado(estado);
+        u.setTipoUsu(id_tipo_usu);
+
+        if (mensaje.equals("<ul>")) {
+            mensaje = null;
+        } else {
+            mensaje = "</ul>";
+        }
+        return mensaje;
+
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
+    private String verificarT(HttpServletRequest req, Tarjeta t) {
+        String mensajeT = "<ul>";
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
+        int numero = Convertidor.aEntero(req.getParameter("txtNTarjeta"));
+        String fecha = req.getParameter("txtFecha");
 
-    private void agregarUsuario(HttpServletRequest request, HttpServletResponse response) {
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        Date fechaAux = null;
         try {
-            //datos personales
-            String rut = request.getParameter("txtRut");
-            String nombre = request.getParameter("txtNombre");
-            String apellido = request.getParameter("txtApellido");
-            String fecha = request.getParameter("txtNacimiento");
-            String correo = request.getParameter("txtCorreo");
-            //datos cuenta
-            String nombreUsu = request.getParameter("txtNombreUser");
-            String contrasena = request.getParameter("txtPass");
-            String contrasenaConf = request.getParameter("txtPassConf");
-            int tipoUsu = Integer.parseInt(request.getParameter("cboTipoUsu"));
-            int estado = 0;
-            //datos del vehiculo
-            String patente = request.getParameter("txtPatente");
-            int anio = Integer.parseInt(request.getParameter("txtAnio"));
-            String marca = request.getParameter("txtMarca");
-            String modelo = request.getParameter("txtModelo");
-            //datos estacionamiento
-            int comuna = Integer.parseInt(request.getParameter("txtComuna"));
-            String direccion = request.getParameter("txtDireccion");
-                      
-            //creo un nuevo usuario
-            Usuario u = new Usuario();
-            //seteo los datos con lo datos que venian desde el formulario
-            u.setNombre(nombreUsu);
-            if (contrasena.equals(contrasenaConf)) {
-                u.setPassword(contrasena);
-            }else{
-                
-            }
-            //tipo de usuario
-            TipoUsu tu = new TipoUsu();
-            tu.setId_tipo_usuario(tipoUsu);
-            u.setTipoUsu(tu);
-            
-            u.setEstado(estado);
-            
-            if (tipoUsu == 2) {
-                //creo un nuevo cliente arendador
-                ClienteArrendador ca = new ClienteArrendador();
-                //creo un nuevo vehiculo
-                Vehiculo v = new Vehiculo();
-                
-                //seteo los datos del cliente
-                ca.setRut_arrendador(rut);
-                ca.setNombre(nombre);
-                ca.setApellido(apellido);
-                //le doy formato a la fecha 
-                Date fechaN = null;
-                SimpleDateFormat spdf = new SimpleDateFormat("dd/MM/yyyy");
-                fechaN = spdf.parse(fecha);
-                ca.setFecha_nacimiento(fechaN);
-                ca.setCorreo_electronico(correo);
-                
-                //seteo los daros del vehiculo
-                v.setPatente(patente);
-                v.setAnio(anio);
-                
-                daoCliente.agregarClienteArrendador(ca);
-                daoVahiculo.agregarVehiculo(v);
-                
-            }else if(tipoUsu == 3){
-                //creo un nuevo cliente arrendatario
-                DuenoEstacionamiento de = new DuenoEstacionamiento();
-                //creo un nuevo estacionamiento
-                Estacionamiento e = new Estacionamiento();
-                
-                //guardo los datos
-                de.setRut_dueno(rut);
-                de.setNombre(nombre);
-                de.setApellido(apellido);
-                //le doy formato a la fecha 
-                Date fechaNDE = null;
-                SimpleDateFormat spdf = new SimpleDateFormat("dd/MM/yyyy");
-                fechaNDE = spdf.parse(fecha);
-                de.setFecha_nacimiento(fechaNDE);
-                de.setCorreo_electronico(correo);
-                de.setDireccion(direccion);               
-                
-                //Comuna
-                Comuna c = new Comuna();
-                c.setId_comuna(comuna);
-                e.setComuna(c);
-                
-                daoDueno.agregarDuenoEstacionamiento(de);
-                daoEstacionamiento.agregarEstacionamiento(e);                
-            }
-            daoUser.agregarUsuario(u);
-        } catch (Exception e) {
+            fechaAux = formato.parse(fecha);
+        } catch (ParseException ex) {
+            Logger.getLogger(ServletUsuario.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+        t.setNum_tarjeta(numero);
+        t.setFecha_expiracion(fechaAux);
+
+        if (mensajeT.equals("<ul>")) {
+            mensajeT = null;
+        } else {
+            mensajeT = "</ul>";
+        }
+
+        return mensajeT;
     }
 
 }

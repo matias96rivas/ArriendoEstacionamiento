@@ -6,12 +6,14 @@
 package Duoc.Portafolio.Dao;
 
 import Duoc.Portafolio.Clases.Tarjeta;
+import Duoc.Portafolio.Conexion.Conexion;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -34,7 +36,12 @@ public class DaoTarjeta {
     public void setMensaje(String mensaje) {
         this.mensaje = mensaje;
     }
+
+    public DaoTarjeta() {
+        cone = new Conexion().obtenerConexion();
+    }
     
+       
     public List<Tarjeta> listarTarjeta(){
         //Creo una nueva lista vacia
         List<Tarjeta> tarjetas = null;
@@ -88,6 +95,8 @@ public class DaoTarjeta {
         //guardo el procedimiento en sql
         String sql = "{call sp_agregar_tarjeta(?,?)}";
         //Compruebo que la conexion no se nula
+        
+        Connection cone = new Conexion().obtenerConexion();
         if (this.cone != null) {
             try {
                 //preparo la llamada al procedimiento
@@ -102,7 +111,7 @@ public class DaoTarjeta {
                 }
                 setMensaje("Los datos de la tarjeta fueron almacenados correctamente.");
                 //cierro la conexion
-                cone.close();
+                this.cone.close();
             } catch (SQLException ex) {
                 setMensaje("Error al registrar los datos de la tarjeta. "+ex.getMessage());
                 Logger.getLogger(DaoTarjeta.class.getName()).log(Level.SEVERE, null, ex);
