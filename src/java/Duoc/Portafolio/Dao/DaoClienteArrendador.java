@@ -8,12 +8,14 @@ package Duoc.Portafolio.Dao;
 import Duoc.Portafolio.Clases.ClienteArrendador;
 import Duoc.Portafolio.Clases.Tarjeta;
 import Duoc.Portafolio.Clases.Usuario;
+import Duoc.Portafolio.Conexion.Conexion;
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.Date;
+import java.util.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -36,6 +38,12 @@ public class DaoClienteArrendador {
     public void setMensaje(String mensaje) {
         this.mensaje = mensaje;
     }
+
+    public DaoClienteArrendador() {
+        cone = new Conexion().obtenerConexion();
+    }
+    
+    
     
     public List<ClienteArrendador> listarClienteArrendador(){
         //Creo una lista vacia
@@ -114,7 +122,7 @@ public class DaoClienteArrendador {
                 cs.setInt(2, cliente.getId_usuario().getId_usuario());
                 cs.setString(3, cliente.getNombre());
                 cs.setString(4, cliente.getApellido());
-                cs.setDate(5, (Date) cliente.getFecha_nacimiento());
+                cs.setString(5, new SimpleDateFormat("dd/MM/yyyy").format(cliente.getFecha_nacimiento()));
                 cs.setString(6, cliente.getCorreo_electronico());
                 cs.setInt(7, cliente.getId_tarjeta().getId_tarjeta());
                 //variable para verificar si se completo el registro
@@ -137,7 +145,7 @@ public class DaoClienteArrendador {
                 }
             }
         }else{
-            setMensaje("Error en la conexion. ");
+            setMensaje("Error en la conexion !!AQUI ESTA EL PROBLEMA!!. ");
         }
     }
     

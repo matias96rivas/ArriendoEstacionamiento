@@ -10,6 +10,7 @@ import Duoc.Portafolio.Clases.DuenoEstacionamiento;
 import Duoc.Portafolio.Clases.Tarjeta;
 import Duoc.Portafolio.Clases.TipoUsu;
 import Duoc.Portafolio.Clases.Usuario;
+import Duoc.Portafolio.Dao.DaoClienteArrendador;
 import Duoc.Portafolio.Dao.DaoTarjeta;
 import Duoc.Portafolio.Dao.DaoUsuario;
 import Duoc.Portafolio.Herramientas.Convertidor;
@@ -46,6 +47,8 @@ public class ServletUsuario extends HttpServlet {
 
         DaoUsuario daoU = new DaoUsuario();
         DaoTarjeta daoT = new DaoTarjeta();
+        DaoClienteArrendador daoC = new DaoClienteArrendador();
+        
 
         switch (accion) {
             case "listar":
@@ -69,14 +72,17 @@ public class ServletUsuario extends HttpServlet {
                 mensajeT = verificarT(req, t);
                 mensajeC = verificarC(req, c);
 
-                if (mensaje == null && mensajeT == null) {
+                if (mensaje == null && mensajeT == null && mensajeC == null) {
                     daoU.agregarUsuario(u);
                     mensaje = daoU.getMensaje();
 
                     daoT.agregarTarjeta(t);
                     mensajeT = daoT.getMensaje();
+                    
+                    daoC.agregarClienteArrendador(c);
+                    mensajeC = daoC.getMensaje();
 
-                    if (mensaje != null || mensajeT != null) {
+                    if (mensaje != null || mensajeT != null || mensajeC != null) {
                         req.setAttribute("usuario", u);
                         direccionar = "registrate.jsp";
                         req.getRequestDispatcher(direccionar).forward(req, resp);
@@ -158,6 +164,7 @@ public class ServletUsuario extends HttpServlet {
     private String verificarC(HttpServletRequest req, ClienteArrendador c) {
         
         DaoTarjeta daoT = new DaoTarjeta();
+        DaoUsuario daoU = new DaoUsuario();
         
         String mensajeC = "<ul>";
         
@@ -167,12 +174,16 @@ public class ServletUsuario extends HttpServlet {
         String fecha = req.getParameter("txtNacimiento");
         
         int idT = daoT.maxId();
-        int idTarjeta = idT +1;
+        int idTarjeta = idT+1;
         
         Tarjeta t = new Tarjeta();
         t.setId_tarjeta(idTarjeta);
         
+        int idU = daoU.maxId();
+        int idUsuario = idU+1;
         
+        Usuario u = new Usuario();
+        u.setId_usuario(idUsuario);
         
         Date fechaN = null;
         SimpleDateFormat spdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -184,11 +195,18 @@ public class ServletUsuario extends HttpServlet {
         String correo = req.getParameter("txtCorreo");
         
         c.setRut_arrendador(rut);
-//        c.setId_usuario(id_usuario);
+        c.setId_usuario(u);
+        c.setNombre(nombre);
         c.setApellido(apellido);
         c.setFecha_nacimiento(fechaN);
         c.setCorreo_electronico(correo);
         c.setId_tarjeta(t);
+        
+        if (mensajeC.equals("<ul>")) {
+            mensajeC = null;
+        } else {
+            mensajeC = "</ul>";
+        }
         
         return mensajeC;
     }

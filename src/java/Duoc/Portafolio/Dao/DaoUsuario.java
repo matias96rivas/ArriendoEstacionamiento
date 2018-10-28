@@ -149,7 +149,7 @@ public class DaoUsuario {
         int ultimoValor = 0;
         if (this.cone != null) {
             try {
-                PreparedStatement ps = cone.prepareStatement("SELECT MAX(u.id_usuario) FROM usuario u");
+                PreparedStatement ps = cone.prepareStatement("SELECT * FROM usuario ORDER BY id_usuario DESC");
                 ResultSet rs = ps.executeQuery();
 
                 if (rs.next()) {

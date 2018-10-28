@@ -131,7 +131,7 @@ public class DaoTarjeta {
         int ultimoValor = 0;
         if (this.cone != null) {
             try {
-                PreparedStatement ps = cone.prepareStatement("SELECT MAX(t.id_tarjeta) FROM tarjeta t");
+                PreparedStatement ps = cone.prepareStatement("SELECT * FROM tarjeta ORDER BY id_tarjeta DESC");
                 ResultSet rs = ps.executeQuery();
 
                 if (rs.next()) {
