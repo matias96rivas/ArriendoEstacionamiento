@@ -4,9 +4,17 @@
         <servlet-name>ServletUsuario</servlet-name>
         <servlet-class>Duoc.Portafolio.Controlador.ServletUsuario</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletVehiculo</servlet-name>
+        <servlet-class>Duoc.Portafolio.Controlador.ServletVehiculo</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletUsuario</servlet-name>
         <url-pattern>/ServletUsuario</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletVehiculo</servlet-name>
+        <url-pattern>/ServletVehiculo</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

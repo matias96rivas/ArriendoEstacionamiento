@@ -59,7 +59,7 @@
                 <a href="#" class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-sliders"></i>  Administraciones</a>
                 <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-road"></i>  Mis Estacionamientos</a>
                 <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-file-o"></i>  Reportes de Transacciones</a>
-                <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-car"></i>  Mi vehículo</a>
+                <a href="." class="w3-bar-item w3-button w3-padding"><i class="fa fa-car"></i>  Mi vehículo</a>
                 <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-star-half-empty"></i>  Calificar Servicio</a>
                 <a href="../CerrarSesion.do" class="w3-bar-item w3-button w3-padding"><i class="fa fa-close"></i>  Cerrar Sesion</a><br><br>
             </div>
@@ -96,7 +96,7 @@
             <!-- Footer -->
             <footer class="w3-container w3-padding-16 w3-light-grey">
                 <h4>FOOTER</h4>
-                <p>Powered by <a href="#" target="_blank">IronSamrt Developers</a></p>
+                <p>Powered by <a href="#" target="_blank">IronSmart Developers</a></p>
             </footer>
 
             <!-- End page content -->

@@ -11,10 +11,10 @@ package Duoc.Portafolio.Clases;/*
 public class Vehiculo {
     private String patente;
     private int anio;
-    private Marca id_marca;
+    private int id_marca;
     private String rut_usuario;
 
-    public Vehiculo(String patente, int anio, Marca id_marca, String rut_usuario){
+    public Vehiculo(String patente, int anio, int id_marca, String rut_usuario){
     this.patente=patente;
     this.anio=anio;
     this.id_marca=id_marca;
@@ -41,11 +41,11 @@ public class Vehiculo {
         this.anio = anio;
     }
 
-    public Marca getId_marca() {
+    public int getId_marca() {
         return id_marca;
     }
 
-    public void setId_marca(Marca id_marca) {
+    public void setId_marca(int id_marca) {
         this.id_marca = id_marca;
     }
 

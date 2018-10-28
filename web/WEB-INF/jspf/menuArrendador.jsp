@@ -25,7 +25,7 @@
             <img src="../img/log.PNG" class="w3-circle w3-margin-right" style="width:46px">
         </div>
         <div class="w3-col s8 w3-bar">
-            <h4>Arrendador</h4>
+            <h4>Arrendatario</h4>
             <span>Bienvenido, <strong><% out.println(u.getNombre());%></strong></span><br>
             <a href="#" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i></a>
             <a href="datos.jsp" class="w3-bar-item w3-button"><i class="fa fa-user"></i></a>
@@ -39,7 +39,7 @@
     <div class="w3-bar-block">
         <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>
         <a href="administraciones.jsp" class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-sliders"></i>  Administraciones</a>
-        <a href="vehiculo.jsp" class="w3-bar-item w3-button w3-padding"><i class="fa fa-car"></i>  Mi Vehículo</a>
+        <a href="agregarVehiculo.jsp" class="w3-bar-item w3-button w3-padding"><i class="fa fa-car"></i>  Agregar Vehículo</a>
         <a href="buscarEstacionamiento.jsp" class="w3-bar-item w3-button w3-padding"><i class="fa fa-search"></i>  Buscar Estacionamientos</a>
         <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-star-half-empty"></i>  Calificar Servicio</a>
         <div class="w3-padding-32">
