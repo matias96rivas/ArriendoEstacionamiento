@@ -38,15 +38,12 @@
         <link href="css/tablaFormulario.css" rel="stylesheet" type="text/css"/>
 
         <!--  formato fecha-->
-        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-        <link rel="stylesheet" href="/resources/demos/style.css">
-        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-        <script>
-            $(function () {
-                $("#datepicker").datepicker();
-            });
-        </script>
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/flick/jquery-ui.min.css">
+        <script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+        <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+        
+        
+
 
     </head>
 
@@ -86,10 +83,8 @@
                                         <input class="w3-input w3-section w3-border" type="date" placeholder="Fecha de Nacimiento:" required name="txtNacimiento">
                                         <input class="w3-input w3-section w3-border" type="text" placeholder="Correo electrónico:" required name="txtCorreo">
                                         --><h5 class="title">Ingrese los datos de su cuenta:</h5>
-                                        <input class="w3-input w3-border" type="text" placeholder="Nombre de usuario:" required name="txtNombreUser">
-                                        <input class="w3-input w3-section w3-border" type="text" placeholder="Contraseña:" required name="txtPass">
-
-
+                                        <input class="form-control" type="text" placeholder="Nombre de usuario:" required name="txtNombreUser">
+                                        <input class="form-control" type="password" placeholder="Contraseña:" required name="txtPass">
                                         <select name="cboTipoUsu" id="cboTipoUsu" class="w3-input w3-section w3-border">
                                             <option>Tipo de Usuario:</option>
                                             <%
@@ -116,13 +111,58 @@
                                         </select> 
 
                                         <h5 class="title">Ingrese los datos de su Tarjeta Bancaria:</h5>
-                                        <input class="w3-input w3-border" type="text" placeholder="Ingrese el n° de su tarjeta:" required name="txtNTarjeta">
-                                        <input class="w3-input w3-section w3-border" type="date" placeholder="Ingrese la fecha de expiración:" id="datepicker" required name="txtFecha">
+                                        <div class="panel panel-default" >
+                                            <div class="panel-heading">
 
-
+                                                <div class="row ">
+                                                    <div class="col-md-12">
+                                                        <input type="text" name="txtNTarjeta" class="form-control" placeholder="Ingrese el número de su tarjeta:" />
+                                                    </div>
+                                                </div><br/>
+                                                <div class="row ">
+                                                    <div id="datepicker" class="col-md-6 col-sm-6 col-xs-6"></div>
+                                                    <div id="datos" class="col-md-3 col-sm-3 col-xs-3">
+                                                        <label for='fecha'>Fecha de expiración:</label>
+                                                        <!-- Campo de texto que recibira el valor seleccionado en el datepicker 
+                                                        le he puesto el atributo readonly para no poder escribir directamente -->
+                                                        <input type='text' name='txtFecha' id='fecha' readonly />
+                                                    </div>
+                                                    <script>
+                                                        $("#datepicker").datepicker({
+                                                            // Formato de la fecha
+                                                            dateFormat: "dd/mm/yy",
+                                                            // Primer dia de la semana El lunes
+                                                            firstDay: 1,
+                                                            // Dias Largo en castellano
+                                                            dayNames: ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"],
+                                                            // Dias cortos en castellano
+                                                            dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
+                                                            // Nombres largos de los meses en castellano
+                                                            monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+                                                            // Nombres de los meses en formato corto 
+                                                            monthNamesShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dec"],
+                                                            // Cuando seleccionamos la fecha esta se pone en el campo Input 
+                                                            onSelect: function (dateText) {
+                                                                $('#fecha').val(dateText);
+                                                            }
+                                                        });
+                                                    </script>
+                                                    <div class="col-md-3 col-sm-3 col-xs-3">
+                                                        <img src="img/tarjeta.png" class="img-rounded" />
+                                                    </div>
+                                                </div>                                                                                              
+                                            </div>
+                                        </div>
+                                        <h5 class="title">Ingrese sus datos de personales:</h5>
+                                        <input class="w3-input w3-section" type="text" placeholder="Rut:" required name="txtRut">
+                                        <input class="w3-input w3-section w3-border" type="text" placeholder="Nombre:" required name="txtNombre">
+                                        <input class="w3-input w3-section w3-border" type="text" placeholder="Apellido:" required name="txtApellido">
+                                        <input class="w3-input w3-section w3-border" type="date" placeholder="Fecha de Nacimiento:" required name="txtNacimiento">
+                                        <input class="w3-input w3-section w3-border" type="text" placeholder="Correo electrónico:" required name="txtCorreo">
                                         <button class="w3-button w3-black w3-section" type="submit">
                                             <i class="fa fa-paper-plane"></i> Registrarse
                                         </button>
+                                        <div>${msg}</div>
                                     </form>
                                 </div>
                             </div>
@@ -222,19 +262,7 @@
         <script src="js/tablaFormulario.js" type="text/javascript"></script>
 
         <!-- formato fecha -->
-        <script>
-                                        $(document).ready(function () {
-                                            var date_input = $('input[name="txtFecha"]'); //our date input has the name "date"
-                                            var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
-                                            var options = {
-                                                format: 'dd/mm/yyyy',
-                                                container: container,
-                                                todayHighlight: true,
-                                                autoclose: true,
-                                            };
-                                            date_input.datepicker(options);
-                                        });
-        </script>
+
 
     </body>
 

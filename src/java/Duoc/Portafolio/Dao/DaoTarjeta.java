@@ -9,7 +9,7 @@ import Duoc.Portafolio.Clases.Tarjeta;
 import Duoc.Portafolio.Conexion.Conexion;
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.Date;
+import java.util.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -103,7 +103,7 @@ public class DaoTarjeta {
                 CallableStatement cs = cone.prepareCall(sql);
                 //cargo los datos
                 cs.setInt(1, tarjeta.getNum_tarjeta());
-                cs.setDate(2, (Date) tarjeta.getFecha_expiracion());
+                cs.setString(2, new SimpleDateFormat("dd/MM/yy").format(tarjeta.getFecha_expiracion()));
                 //compruebo que fue exitoso
                 int exe = cs.executeUpdate();
                 if (exe == 0) {

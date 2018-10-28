@@ -5,13 +5,23 @@
  */
 package Duoc.Portafolio.Herramientas;
 
+import Duoc.Portafolio.Conexion.Conexion;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Matias
  */
 public class Convertidor {
+    
+    Connection cone;
 
     public Convertidor() {
+        cone = new Conexion().obtenerConexion();
     }
     
     public static Integer aEntero(String algo){
@@ -39,4 +49,6 @@ public class Convertidor {
         return resultado;
         
     }
+    
+    
 }

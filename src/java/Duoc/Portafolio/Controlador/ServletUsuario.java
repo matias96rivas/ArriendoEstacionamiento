@@ -5,6 +5,8 @@
  */
 package Duoc.Portafolio.Controlador;
 
+import Duoc.Portafolio.Clases.ClienteArrendador;
+import Duoc.Portafolio.Clases.DuenoEstacionamiento;
 import Duoc.Portafolio.Clases.Tarjeta;
 import Duoc.Portafolio.Clases.TipoUsu;
 import Duoc.Portafolio.Clases.Usuario;
@@ -38,6 +40,8 @@ public class ServletUsuario extends HttpServlet {
         String accion = req.getParameter("accion");
         String mensaje = null;
         String mensajeT = null;
+        String mensajeC = null;
+        String mensajeD = null;
         String direccionar = null;
 
         DaoUsuario daoU = new DaoUsuario();
@@ -58,9 +62,12 @@ public class ServletUsuario extends HttpServlet {
             case "agregarUsuario":
                 Usuario u = new Usuario();
                 Tarjeta t = new Tarjeta();
+                ClienteArrendador c = new ClienteArrendador();
+                DuenoEstacionamiento de = new DuenoEstacionamiento();
 
                 mensaje = verificarU(req, u);
                 mensajeT = verificarT(req, t);
+//                mensajeC = verificarC(req, c);
 
                 if (mensaje == null && mensajeT == null) {
                     daoU.agregarUsuario(u);
@@ -74,6 +81,13 @@ public class ServletUsuario extends HttpServlet {
                         direccionar = "registrate.jsp";
                         req.getRequestDispatcher(direccionar).forward(req, resp);
                     } else {
+                        String msg = "<div>";
+                        msg += "<div class='alert'>";
+                        msg += "<span class='closebtn'>&times;</span>";
+                        msg += "<strong>Alerta!</strong>";
+                        msg += mensaje;
+                        msg += "</div></div>";
+                        req.setAttribute("msg", msg);
                         direccionar = "index.jsp";
                         req.getRequestDispatcher(direccionar).forward(req, resp);
                     }
@@ -90,18 +104,13 @@ public class ServletUsuario extends HttpServlet {
         String mensaje = "<ul>";
 
         String nombre = req.getParameter("txtNombreUser");
-        String pass = req.getParameter("txtPass");
-
-        int estado = 1;
-
-        
-        int id_tipo_usu = Integer.parseInt(req.getParameter("cboTipoUsu"));
-        
+        String pass = req.getParameter("txtPass");       
+        int estado = 1;        
+        int id_tipo_usu = Integer.parseInt(req.getParameter("cboTipoUsu"));      
 
         if ((nombre.trim().length() <= 3)) {
             mensaje += "<li>El nombre de usuario debe tener al menos 3 caracteres.</li>";
         }
-
         if ((pass.trim().length() <= 3)) {
             mensaje += "<li>Contraseña insegura!!! Por favor, ingrese una contraseña con más de 3 caracteres.</li>";
         }
@@ -126,10 +135,10 @@ public class ServletUsuario extends HttpServlet {
         int numero = Convertidor.aEntero(req.getParameter("txtNTarjeta"));
         String fecha = req.getParameter("txtFecha");
 
-        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
         Date fechaAux = null;
+        SimpleDateFormat spdf = new SimpleDateFormat("dd/MM/yyyy");
         try {
-            fechaAux = formato.parse(fecha);
+            fechaAux = spdf.parse(fecha);
         } catch (ParseException ex) {
             Logger.getLogger(ServletUsuario.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -145,5 +154,16 @@ public class ServletUsuario extends HttpServlet {
 
         return mensajeT;
     }
+
+//    private String verificarC(HttpServletRequest req, ClienteArrendador c) {
+//        String mensajeC = "<ul>";
+//        
+//        String rut = req.getParameter("txtRut");
+//        String nombre = req.getParameter("txtNombre");
+//        String nombre = req.getParameter("txtApellido");
+//        
+//        
+//        return mensajeC;
+//    }
 
 }
