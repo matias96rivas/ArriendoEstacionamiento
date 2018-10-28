@@ -10,6 +10,7 @@ import Duoc.Portafolio.Clases.Usuario;
 import Duoc.Portafolio.Conexion.Conexion;
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -142,5 +143,36 @@ public class DaoUsuario {
         }else{
             setMensaje("Error en la conexion.");
         }
+    }
+    
+    public int maxId() {
+        int ultimoValor = 0;
+        if (this.cone != null) {
+            try {
+                PreparedStatement ps = cone.prepareStatement("SELECT MAX(u.id_usuario) FROM usuario u");
+                ResultSet rs = ps.executeQuery();
+
+                if (rs.next()) {
+                    ultimoValor = rs.getInt("id_usuario");
+                }
+                
+                ps.close();
+                rs.close();
+                cone.close();
+            } catch (SQLException ex) {
+                setMensaje("Error al rescatar el ultimo. " + ex.getMessage());
+                Logger.getLogger(DaoTarjeta.class.getName()).log(Level.SEVERE, null, ex);
+            }finally{
+                try {
+                    cone.close();
+                } catch (Exception e) {
+                    setMensaje(e.getMessage());
+                }
+            }
+        }else{
+            setMensaje("Error en la conexion.");
+        }
+        return ultimoValor;
+
     }
 }

@@ -9,6 +9,7 @@ import Duoc.Portafolio.Clases.Tarjeta;
 import Duoc.Portafolio.Conexion.Conexion;
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,7 +26,7 @@ import oracle.jdbc.OracleTypes;
  * @author Matias
  */
 public class DaoTarjeta {
-    
+
     Connection cone;
     private String mensaje;
 
@@ -40,14 +41,13 @@ public class DaoTarjeta {
     public DaoTarjeta() {
         cone = new Conexion().obtenerConexion();
     }
-    
-       
-    public List<Tarjeta> listarTarjeta(){
+
+    public List<Tarjeta> listarTarjeta() {
         //Creo una nueva lista vacia
         List<Tarjeta> tarjetas = null;
         //Guardo el procedimiento en la variable
         String sql = "{call sp_listar_tarjeta(?)}";
-       //Compruebo que la conexion no sea nula
+        //Compruebo que la conexion no sea nula
         if (this.cone != null) {
             try {
                 //preparo la llamada al procedimiento
@@ -61,7 +61,7 @@ public class DaoTarjeta {
                 //convierto la lista en un Array
                 tarjetas = new ArrayList<>();
                 //Recorro los datos
-                while (rs.next()) {                    
+                while (rs.next()) {
                     //creo una nueva tarjeta
                     Tarjeta t = new Tarjeta();
                     t.setId_tarjeta(rs.getInt(1));
@@ -69,33 +69,33 @@ public class DaoTarjeta {
                     //le doy formato a la fecha
                     Timestamp tsFecha = rs.getTimestamp(3);
                     t.setFecha_expiracion(tsFecha);
-                    
+
                     //Agrego los datos a la tabla
                     tarjetas.add(t);
                 }
                 cone.close();
             } catch (SQLException ex) {
-                setMensaje("Error al listar los datos de tarjeta. "+ex.getMessage());
+                setMensaje("Error al listar los datos de tarjeta. " + ex.getMessage());
                 Logger.getLogger(DaoTarjeta.class.getName()).log(Level.SEVERE, null, ex);
-            }finally{
+            } finally {
                 try {
                     cone.close();
                 } catch (Exception e) {
                     setMensaje(e.getMessage());
                 }
             }
-        }else{
+        } else {
             setMensaje("Error en la conexion.");
         }
         //retorno la lista
         return tarjetas;
     }
-    
-    public void agregarTarjeta(Tarjeta tarjeta){
+
+    public void agregarTarjeta(Tarjeta tarjeta) {
         //guardo el procedimiento en sql
         String sql = "{call sp_agregar_tarjeta(?,?)}";
         //Compruebo que la conexion no se nula
-        
+
         Connection cone = new Conexion().obtenerConexion();
         if (this.cone != null) {
             try {
@@ -107,13 +107,42 @@ public class DaoTarjeta {
                 //compruebo que fue exitoso
                 int exe = cs.executeUpdate();
                 if (exe == 0) {
-                    throw new SQLException();                    
+                    throw new SQLException();
                 }
                 setMensaje("Los datos de la tarjeta fueron almacenados correctamente.");
                 //cierro la conexion
                 this.cone.close();
             } catch (SQLException ex) {
-                setMensaje("Error al registrar los datos de la tarjeta. "+ex.getMessage());
+                setMensaje("Error al registrar los datos de la tarjeta. " + ex.getMessage());
+                Logger.getLogger(DaoTarjeta.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+                    cone.close();
+                } catch (Exception e) {
+                    setMensaje(e.getMessage());
+                }
+            }
+        } else {
+            setMensaje("Error en la conexion.");
+        }
+    }
+
+    public int maxId() {
+        int ultimoValor = 0;
+        if (this.cone != null) {
+            try {
+                PreparedStatement ps = cone.prepareStatement("SELECT MAX(t.id_tarjeta) FROM tarjeta t");
+                ResultSet rs = ps.executeQuery();
+
+                if (rs.next()) {
+                    ultimoValor = rs.getInt("id_tarjeta");
+                }
+                
+                ps.close();
+                rs.close();
+                cone.close();
+            } catch (SQLException ex) {
+                setMensaje("Error al rescatar el ultimo. " + ex.getMessage());
                 Logger.getLogger(DaoTarjeta.class.getName()).log(Level.SEVERE, null, ex);
             }finally{
                 try {
@@ -124,7 +153,8 @@ public class DaoTarjeta {
             }
         }else{
             setMensaje("Error en la conexion.");
-        }        
+        }
+        return ultimoValor;
+
     }
 }
-

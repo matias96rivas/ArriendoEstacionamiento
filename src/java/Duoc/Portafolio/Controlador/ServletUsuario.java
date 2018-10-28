@@ -67,7 +67,7 @@ public class ServletUsuario extends HttpServlet {
 
                 mensaje = verificarU(req, u);
                 mensajeT = verificarT(req, t);
-//                mensajeC = verificarC(req, c);
+                mensajeC = verificarC(req, c);
 
                 if (mensaje == null && mensajeT == null) {
                     daoU.agregarUsuario(u);
@@ -155,15 +155,42 @@ public class ServletUsuario extends HttpServlet {
         return mensajeT;
     }
 
-//    private String verificarC(HttpServletRequest req, ClienteArrendador c) {
-//        String mensajeC = "<ul>";
-//        
-//        String rut = req.getParameter("txtRut");
-//        String nombre = req.getParameter("txtNombre");
-//        String nombre = req.getParameter("txtApellido");
-//        
-//        
-//        return mensajeC;
-//    }
+    private String verificarC(HttpServletRequest req, ClienteArrendador c) {
+        
+        DaoTarjeta daoT = new DaoTarjeta();
+        
+        String mensajeC = "<ul>";
+        
+        String rut = req.getParameter("txtRut");
+        String nombre = req.getParameter("txtNombre");
+        String apellido = req.getParameter("txtApellido");
+        String fecha = req.getParameter("txtNacimiento");
+        
+        int idT = daoT.maxId();
+        int idTarjeta = idT +1;
+        
+        Tarjeta t = new Tarjeta();
+        t.setId_tarjeta(idTarjeta);
+        
+        
+        
+        Date fechaN = null;
+        SimpleDateFormat spdf = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            fechaN = spdf.parse(fecha);
+        } catch (ParseException ex) {
+            Logger.getLogger(ServletUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        String correo = req.getParameter("txtCorreo");
+        
+        c.setRut_arrendador(rut);
+//        c.setId_usuario(id_usuario);
+        c.setApellido(apellido);
+        c.setFecha_nacimiento(fechaN);
+        c.setCorreo_electronico(correo);
+        c.setId_tarjeta(t);
+        
+        return mensajeC;
+    }
 
 }

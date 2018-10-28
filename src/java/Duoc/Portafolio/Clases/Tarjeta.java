@@ -49,9 +49,7 @@ public class Tarjeta {
         this.fecha_expiracion = fecha_expiracion;
     }
     
-//    public int maxId(){
-//        
-//    }
+
     
     
 }

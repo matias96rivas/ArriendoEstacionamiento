@@ -38,11 +38,13 @@
         <link href="css/tablaFormulario.css" rel="stylesheet" type="text/css"/>
 
         <!--  formato fecha-->
-        <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/flick/jquery-ui.min.css">
-        <script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
-        <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-        
-        
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <link rel="stylesheet" href="/resources/demos/style.css">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+
 
 
     </head>
@@ -142,6 +144,8 @@
                                                             // Nombres de los meses en formato corto 
                                                             monthNamesShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dec"],
                                                             // Cuando seleccionamos la fecha esta se pone en el campo Input 
+                                                            changeMonth: true,
+                                                            changeYear: true,
                                                             onSelect: function (dateText) {
                                                                 $('#fecha').val(dateText);
                                                             }
@@ -154,11 +158,42 @@
                                             </div>
                                         </div>
                                         <h5 class="title">Ingrese sus datos de personales:</h5>
-                                        <input class="w3-input w3-section" type="text" placeholder="Rut:" required name="txtRut">
-                                        <input class="w3-input w3-section w3-border" type="text" placeholder="Nombre:" required name="txtNombre">
-                                        <input class="w3-input w3-section w3-border" type="text" placeholder="Apellido:" required name="txtApellido">
-                                        <input class="w3-input w3-section w3-border" type="date" placeholder="Fecha de Nacimiento:" required name="txtNacimiento">
-                                        <input class="w3-input w3-section w3-border" type="text" placeholder="Correo electrónico:" required name="txtCorreo">
+                                        <input class="form-control" type="text" placeholder="Rut:" required name="txtRut">
+                                        <input class="form-control" type="text" placeholder="Nombre:" required name="txtNombre">
+                                        <input class="form-control" type="text" placeholder="Apellido:" required name="txtApellido">
+                                        
+                                        <div class="row">
+                                            <div id="datepickerN" class="col-md-6 col-sm-6 col-xs-6"></div>
+                                            <div id="datos" class="col-md-6 col-sm-6 col-xs-6">
+                                                <label for='fechaN'>Fecha de nacimiento:</label>
+                                                <!-- Campo de texto que recibira el valor seleccionado en el datepicker 
+                                                le he puesto el atributo readonly para no poder escribir directamente -->
+                                                <input type='text' name='txtNacimiento' id='fechaN' readonly/>
+                                            </div>
+                                            <script>
+                                                $("#datepickerN").datepicker({
+                                                    // Formato de la fecha
+                                                    dateFormat: "dd/mm/yy",
+                                                    // Primer dia de la semana El lunes
+                                                    firstDay: 1,
+                                                    // Dias Largo en castellano
+                                                    dayNames: ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"],
+                                                    // Dias cortos en castellano
+                                                    dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
+                                                    // Nombres largos de los meses en castellano
+                                                    monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+                                                    // Nombres de los meses en formato corto 
+                                                    monthNamesShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dec"],
+                                                    // Cuando seleccionamos la fecha esta se pone en el campo Input 
+                                                    changeMonth: true,
+                                                    changeYear: true,
+                                                    onSelect: function (dateText) {
+                                                        $('#fechaN').val(dateText);
+                                                    }
+                                                });
+                                            </script>
+                                        </div>
+                                        <input class="form-control" type="text" placeholder="Correo electrónico:" required name="txtCorreo">
                                         <button class="w3-button w3-black w3-section" type="submit">
                                             <i class="fa fa-paper-plane"></i> Registrarse
                                         </button>
